@@ -14,6 +14,26 @@ module SamlIdp
       expect(subject.fresh).to match('<SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://example.com/saml/logout"/>')
     end
 
+    context '#x509_certificate' do
+      context 'when a new certificate is setup' do
+        it 'return the new certificate' do
+          subject.configurator.new_x509_certificate = new_signature
+          expect(subject.x509_certificate.length < 15).to(
+            eq(new_signature.length < 15)
+          )
+        end
+      end
+
+      context 'when the new certificate turn on old certificate' do
+        it 'return certificate' do
+          subject.configurator.new_x509_certificate = nil
+          expect(subject.x509_certificate.length < 15).to(
+            eq(Default::X509_CERTIFICATE.length < 15)
+          )
+        end
+      end
+    end
+
     context "technical contact" do
       before do
         subject.configurator.technical_contact.company       = nil

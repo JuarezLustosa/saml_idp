@@ -2,7 +2,9 @@ require 'spec_helper'
 module SamlIdp
   describe Configurator do
     it { should respond_to :x509_certificate }
+    it { should respond_to :new_x509_certificate }
     it { should respond_to :secret_key }
+    it { should respond_to :new_secret_key }
     it { should respond_to :algorithm }
     it { should respond_to :organization_name }
     it { should respond_to :organization_url }
@@ -21,8 +23,16 @@ module SamlIdp
       expect(subject.x509_certificate).to eq(Default::X509_CERTIFICATE)
     end
 
+    it "new_x509_certificate should be nil" do
+      expect(subject.new_x509_certificate).to be_nil
+    end
+
     it "has a valid secret_key" do
       expect(subject.secret_key).to eq(Default::SECRET_KEY)
+    end
+
+    it "new_secret_key should be nil" do
+      expect(subject.new_secret_key).to be_nil
     end
 
     it "has a valid algorithm" do
@@ -32,7 +42,6 @@ module SamlIdp
     it "has a valid reference_id_generator" do
       expect(subject.reference_id_generator).to respond_to :call
     end
-
 
     it "can call service provider finder" do
       expect(subject.service_provider.finder).to respond_to :call
